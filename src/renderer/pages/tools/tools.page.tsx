@@ -1,5 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
-import ReactGA from 'react-ga4'
+import React, { useMemo, useState } from 'react'
 import { FiChevronRight } from 'react-icons/fi'
 import { IoArrowBack } from 'react-icons/io5'
 import { tools, type ToolDefinition } from './tools.registry'
@@ -15,28 +14,7 @@ export function ToolsPage() {
 		return tools.filter((tool) => tool.platforms.includes(currentPlatform as any))
 	}, [currentPlatform])
 
-	useEffect(() => {
-		if (activeTool) {
-			ReactGA.send({
-				hitType: 'pageview',
-				page: `/tools/${activeTool.key}`,
-				title: `Tool - ${activeTool.name}`,
-			})
-		} else {
-			ReactGA.send({
-				hitType: 'pageview',
-				page: '/tools',
-				title: 'Tools',
-			})
-		}
-	}, [activeTool])
-
 	const handleSelectTool = (tool: ToolDefinition) => {
-		ReactGA.event({
-			category: 'Tools',
-			action: 'OPEN_TOOL',
-			label: tool.name,
-		})
 		setActiveTool(tool)
 	}
 

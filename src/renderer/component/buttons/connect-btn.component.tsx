@@ -1,5 +1,4 @@
 import { useContext, useMemo, useState } from 'react'
-import ReactGA from 'react-ga4'
 import { AiOutlineLoading } from 'react-icons/ai'
 import { CiPower } from 'react-icons/ci'
 
@@ -58,13 +57,6 @@ export function ConnectButtonComponent() {
 
 				servers.setCurrentActive(servers.selected)
 				window.ipc.notif(response.message)
-
-				ReactGA.event({
-					category: 'User',
-					action: 'CONNECTED',
-					label: servers.selected.name,
-					value: 1,
-				})
 			}
 		} finally {
 			setLoading(false)

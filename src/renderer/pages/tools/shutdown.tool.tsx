@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { toast } from 'react-hot-toast'
-import ReactGA from 'react-ga4'
 import { BsClock } from 'react-icons/bs'
 import { MdClear } from 'react-icons/md'
 import { FiInfo } from 'react-icons/fi'
@@ -24,11 +23,6 @@ export function ShutdownTool() {
 		const target = new Date(Date.now() + minutes * 60 * 1000)
 		setScheduledDate(target.toISOString().split('T')[0])
 		setScheduledTime(target.toTimeString().slice(0, 5))
-		ReactGA.event({
-			category: 'ShutdownTool',
-			action: 'QUICK_PRESET',
-			label: `${minutes}m`,
-		})
 	}
 
 	const handleScheduleShutdown = async () => {
@@ -54,12 +48,6 @@ export function ShutdownTool() {
 				description: `Shutdown at ${scheduleDateTime.toLocaleString()}`,
 			})
 
-			ReactGA.event({
-				category: 'ShutdownTool',
-				action: 'SCHEDULE_SHUTDOWN',
-				value: Math.floor(delay / 1000),
-			})
-
 			toast.success('Shutdown scheduled successfully!')
 		} catch (error) {
 			toast.error('Failed to schedule shutdown')
@@ -73,10 +61,6 @@ export function ShutdownTool() {
 		setClearingAll(true)
 		try {
 			await window.ipc.clearAllShutdowns()
-			ReactGA.event({
-				category: 'ShutdownTool',
-				action: 'CLEAR_SHUTDOWNS',
-			})
 			toast.success('All scheduled shutdowns cleared')
 		} catch (error) {
 			toast.error('Failed to clear all shutdowns')

@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { toast } from 'react-hot-toast'
-import ReactGA from 'react-ga4'
 import { FiCopy, FiGlobe, FiMapPin, FiRefreshCw, FiServer } from 'react-icons/fi'
 import { Button } from '../../component/button/button'
 
@@ -45,18 +44,10 @@ export function MyIpTool() {
 			if (!res.ok) throw new Error(`HTTP ${res.status}`)
 			const json: IpInfo = await res.json()
 			setData(json)
-			ReactGA.event({
-				category: 'MyIpTool',
-				action: 'FETCH_IP_SUCCESS',
-			})
 		} catch (err) {
 			console.error(err)
 			setError('Failed to fetch IP details')
 			toast.error('Failed to fetch IP details')
-			ReactGA.event({
-				category: 'MyIpTool',
-				action: 'FETCH_IP_ERROR',
-			})
 		} finally {
 			setLoading(false)
 		}
@@ -70,10 +61,6 @@ export function MyIpTool() {
 		if (data?.ip) {
 			navigator.clipboard.writeText(data.ip)
 			toast.success('IP address copied!')
-			ReactGA.event({
-				category: 'MyIpTool',
-				action: 'COPY_IP',
-			})
 		}
 	}
 
