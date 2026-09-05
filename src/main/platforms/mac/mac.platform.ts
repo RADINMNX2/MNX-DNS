@@ -1,0 +1,59 @@
+import { exec } from 'node:child_process'
+import { promisify } from 'node:util'
+import { Platform } from '../platform'
+
+const execPromise = promisify(exec)
+
+export class MacPlatform extends Platform {
+	async clearDns(): Promise<void> {
+		try {
+			await this.setDns(['8.8.8.8', '8.8.4.4'])
+		} catch (e) {
+			throw e
+		}
+	}
+
+	async getActiveDns(): Promise<string[]> {
+		try {
+			const { stdout } = await execPromise(
+				"scutil --dns | awk '/nameserver/ { print $3 }'",
+			)
+
+			// scutil prints the same nameserver once per resolver, so de-duplicate
+			return [...new Set(stdout.trim().split('\n').filter(Boolean))]
+		} catch (e) {
+			throw e
+		}
+	}
+
+	async getInterfacesList(): Promise<any> {
+		// Implement the logic to retrieve the list of interfaces for macOS here
+		// Example: You can use the "networksetup" command to get the list of interfaces
+		// For simplicity, I'm returning an empty array for now
+		return []
+	}
+
+	async setDns(nameServers: string[]): Promise<void> {
+		try {
+			const dnsServers = nameServers.join(' ')
+
+			await execPromise(`networksetup -setdnsservers Wi-Fi ${dnsServers}`)
+
+			try {
+				await execPromise(`networksetup -setdnsservers Ethernet ${dnsServers}`)
+			} catch (e) {
+				// ignore if device don't have Ethernet
+			}
+		} catch (e) {
+			throw e
+		}
+	}
+
+	public async flushDns(): Promise<void> {
+		try {
+			await execPromise('sudo killall -HUP mDNSResponder')
+		} catch (e) {
+			throw e
+		}
+	}
+}
