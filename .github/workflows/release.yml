@@ -11,11 +11,12 @@ on:
         required: false
         default: 'v1.0.0'
 
+permissions:
+  contents: write
+
 jobs:
   prepare:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     outputs:
       commit_sha: ${{ steps.set_sha.outputs.commit_sha }}
     steps:
@@ -25,10 +26,10 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0
 
-      - name: Install Node v20
+      - name: Install Node v22
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
 
       - name: Update version
         if: github.event_name == 'workflow_dispatch'
@@ -66,11 +67,14 @@ jobs:
         with:
           ref: ${{ needs.prepare.outputs.commit_sha || github.ref }}
 
-      - name: Install Node v20
+      - name: Install Node v22
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
+
+      - name: Remove stale lockfile
+        run: rm -f package-lock.json
 
       - name: Install dependencies
         run: npm install --force
@@ -92,11 +96,14 @@ jobs:
         with:
           ref: ${{ needs.prepare.outputs.commit_sha || github.ref }}
 
-      - name: Install Node v20
+      - name: Install Node v22
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
+
+      - name: Remove stale lockfile
+        run: Remove-Item package-lock.json -ErrorAction SilentlyContinue
 
       - name: Install dependencies
         run: npm install --force
@@ -118,10 +125,10 @@ jobs:
         with:
           ref: ${{ needs.prepare.outputs.commit_sha || github.ref }}
 
-      - name: Install Node v20
+      - name: Install Node v22
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
 
       - name: Install Python
@@ -137,6 +144,9 @@ jobs:
 
       - name: Update node-gyp
         run: npm install -g node-gyp
+
+      - name: Remove stale lockfile
+        run: rm -f package-lock.json
 
       - name: Install dependencies
         run: npm install --force
