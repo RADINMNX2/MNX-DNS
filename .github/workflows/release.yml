@@ -46,9 +46,6 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add package.json
-          if [ -f package-lock.json ]; then
-            git add package-lock.json
-          fi
           if ! git diff --staged --quiet; then
             git commit -m "chore(release): bump version to ${{ github.event.inputs.version }}"
             git push origin HEAD:${{ github.ref_name }}
@@ -71,10 +68,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: npm
-
-      - name: Remove stale lockfile
-        run: rm -f package-lock.json
 
       - name: Install dependencies
         run: npm install --force
@@ -100,10 +93,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: npm
-
-      - name: Remove stale lockfile
-        run: Remove-Item package-lock.json -ErrorAction SilentlyContinue
 
       - name: Install dependencies
         run: npm install --force
@@ -129,7 +118,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: npm
 
       - name: Install Python
         run: brew install python@3.11
@@ -144,9 +132,6 @@ jobs:
 
       - name: Update node-gyp
         run: npm install -g node-gyp
-
-      - name: Remove stale lockfile
-        run: rm -f package-lock.json
 
       - name: Install dependencies
         run: npm install --force
