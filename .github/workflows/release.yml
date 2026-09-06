@@ -2,92 +2,27 @@ name: Build & Release MNX DNS
 
 on:
   push:
+    branches:
+      - main
     tags:
       - "v*"
   workflow_dispatch:
     inputs:
       version:
-        description: 'Release Version (e.g. v1.0.0)'
+        description: 'Release Version (e.g. v2.0.0)'
         required: false
-        default: 'v1.0.0'
+        default: 'v2.0.0'
 
 permissions:
   contents: write
 
 jobs:
-  prepare:
-    runs-on: ubuntu-latest
-    outputs:
-      commit_sha: ${{ steps.set_sha.outputs.commit_sha }}
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          fetch-depth: 0
-
-      - name: Install Node v22
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-
-      - name: Update version
-        if: github.event_name == 'workflow_dispatch'
-        run: |
-          VERSION="${{ github.event.inputs.version }}"
-          CLEAN_VERSION="${VERSION#v}"
-          if [ -n "$CLEAN_VERSION" ]; then
-            npm version "$CLEAN_VERSION" --no-git-tag-version --allow-same-version
-          fi
-
-      - name: Commit and push changes
-        if: github.event_name == 'workflow_dispatch'
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add package.json
-          if ! git diff --staged --quiet; then
-            git commit -m "chore(release): bump version to ${{ github.event.inputs.version }}"
-            git push origin HEAD:${{ github.ref_name }}
-          fi
-
-      - name: Set output commit SHA
-        id: set_sha
-        run: echo "commit_sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
-
-  build_linux:
-    needs: [prepare]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ needs.prepare.outputs.commit_sha || github.ref }}
-
-      - name: Install Node v22
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-
-      - name: Install dependencies
-        run: npm install --force
-
-      - name: Install electron-builder
-        run: npm i electron-builder -g
-
-      - name: Build & Publish Linux
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npm run publish:linux
-
   build_windows:
-    needs: [prepare]
     runs-on: windows-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          ref: ${{ needs.prepare.outputs.commit_sha || github.ref }}
 
       - name: Install Node v22
         uses: actions/setup-node@v4
@@ -97,49 +32,37 @@ jobs:
       - name: Install dependencies
         run: npm install --force
 
-      - name: Install electron-builder
-        run: npm i electron-builder -g
+      - name: Build Web Assets (Vite)
+        run: npx vite build
 
-      - name: Build & Publish Windows
+      - name: Package Windows Installer
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npm run publish:win
+        run: npx electron-builder --win --x64
 
-  build_macos:
-    needs: [prepare]
-    runs-on: macOS-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - name: Upload Installer to Actions (Direct Download)
+        uses: actions/upload-artifact@v4
         with:
-          ref: ${{ needs.prepare.outputs.commit_sha || github.ref }}
+          name: MNX-DNS-Windows-Setup
+          path: |
+            dist/*.exe
+            dist/*.msi
+            release/*.exe
+          if-no-files-found: warn
 
-      - name: Install Node v22
-        uses: actions/setup-node@v4
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/') || github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
         with:
-          node-version: 22
-
-      - name: Install Python
-        run: brew install python@3.11
-
-      - name: Install Python setuptools
-        run: brew install python-setuptools
-
-      - name: Install Build Tools
-        run: |
-          brew install libtool automake autoconf
-          sudo xcode-select --reset
-
-      - name: Update node-gyp
-        run: npm install -g node-gyp
-
-      - name: Install dependencies
-        run: npm install --force
-
-      - name: Install electron-builder
-        run: npm i electron-builder -g
-
-      - name: Build & Publish macOS
+          tag_name: ${{ github.event.inputs.version || 'v2.0.0' }}
+          name: "MNX DNS ${{ github.event.inputs.version || 'v2.0.0' }} — Flagship Edition"
+          draft: false
+          prerelease: false
+          generate_release_notes: true
+          files: |
+            dist/*.exe
+            dist/*.msi
+            dist/*.blockmap
+            release/*.exe
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npm run publish:mac
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
