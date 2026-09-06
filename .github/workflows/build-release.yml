@@ -24,33 +24,19 @@ jobs:
       - name: Install dependencies
         run: npm install --force
 
-      - name: Ensure build directories exist
-        shell: cmd
-        run: |
-          if not exist "binaries\windivert" mkdir "binaries\windivert"
-          if not exist "binaries\wireguard" mkdir "binaries\wireguard"
-          if not exist "binaries\aether" mkdir "binaries\aether"
-          echo.>"binaries\windivert\.gitkeep"
-          echo.>"binaries\wireguard\.gitkeep"
-          echo.>"binaries\aether\.gitkeep"
-
       - name: Typecheck
-        shell: cmd
-        run: node_modules\.bin\tsc --noEmit
+        run: npx tsc --noEmit
 
-      - name: Vite Build
-        shell: cmd
-        run: node_modules\.bin\vite build
+      - name: Build renderer + main + preload
+        run: npx vite build
 
-      - name: Electron Builder
-        shell: cmd
+      - name: Package Electron for Windows
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: node_modules\.bin\electron-builder --win --x64 -p never
+        run: npx electron-builder --win --x64 -p never
 
       - name: List artifacts
-        shell: cmd
-        run: dir release /s /b
+        run: dir release
 
       - name: Upload Installer
         uses: actions/upload-artifact@v4

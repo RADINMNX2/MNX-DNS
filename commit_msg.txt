@@ -1,1 +1,1 @@
-feat: MNX DNS flagship edition - gaming DNS, WinDivert router, Aether tunnel, game scanner, radar engine, CI/CD pipeline
+fix(ci): use direct node_modules paths + Node 22 + robust build steps 
