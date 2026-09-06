@@ -7,6 +7,7 @@ import { DnsService } from './services/dns.service'
 import { LinuxPlatform } from './platforms/linux/linux.platform'
 import { WindowsPlatform } from './platforms/windows/windows.platform'
 import { MacPlatform } from './platforms/mac/mac.platform'
+import { getNetworkEngine, NetworkEngine } from './services/network-engine'
 
 let platform: Platform
 
@@ -25,6 +26,7 @@ switch (os.platform()) {
 }
 
 export const dnsService: DnsService = new DnsService(platform)
+export const networkEngine: NetworkEngine = getNetworkEngine()
 
 export const autoLauncher = new AutoLaunch({
 	name: app.getName(),

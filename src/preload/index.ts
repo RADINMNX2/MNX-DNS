@@ -37,8 +37,8 @@ export const ipcPreload = {
 		ipcRenderer.invoke(EventsKeys.BENCHMARK_DNS, { targetUrl, servers }),
 	checkUpdate: () => ipcRenderer.invoke(EventsKeys.CHECK_UPDATE),
 	startUpdate: () => ipcRenderer.invoke(EventsKeys.START_UPDATE),
-	on: (string: string, cb: any) => ipcRenderer.on(string, cb),
-	off: (string: string, cb: any) => ipcRenderer.on(string, cb),
+	on: (channel: string, cb: any) => ipcRenderer.on(channel, cb),
+	off: (channel: string, cb: any) => ipcRenderer.removeListener(channel, cb),
 	close: () => ipcRenderer.send(EventsKeys.CLOSE),
 	minimize: () => ipcRenderer.send(EventsKeys.MINIMIZE),
 	togglePinServer: (server: ServerStore) =>
@@ -57,6 +57,52 @@ export const ipcPreload = {
 		ipcRenderer.invoke(EventsKeys.SET_INTERFACE_STATUS, { name, enable }),
 	switchNetworkType: (targetType: 'lan' | 'wifi' | 'both') =>
 		ipcRenderer.invoke(EventsKeys.SWITCH_NETWORK_TYPE, targetType),
+	networkStart: () => ipcRenderer.invoke(EventsKeys.NETWORK_ENGINE_START),
+	networkStop: () => ipcRenderer.invoke(EventsKeys.NETWORK_ENGINE_STOP),
+	networkStatus: () => ipcRenderer.invoke(EventsKeys.NETWORK_ENGINE_STATUS),
+	tunnelConnect: (node: {
+		id: string
+		name: string
+		region: string
+		countryCode: string
+		endpoint: string
+		publicKey: string
+	}) => ipcRenderer.invoke(EventsKeys.TUNNEL_CONNECT, node),
+	tunnelDisconnect: () => ipcRenderer.invoke(EventsKeys.TUNNEL_DISCONNECT),
+	tunnelStatus: () => ipcRenderer.invoke(EventsKeys.TUNNEL_STATUS),
+	splitTunnelConfig: (config: {
+		enabled: boolean
+		bypassDomains: string[]
+		gatewayCidrs: string[]
+		excludeApps: string[]
+	}) => ipcRenderer.invoke(EventsKeys.SPLIT_TUNNEL_CONFIG, config),
+	getGameServers: () => ipcRenderer.invoke(EventsKeys.GET_GAME_SERVERS),
+	aetherStart: (config?: any) => ipcRenderer.invoke(EventsKeys.AETHER_START, config),
+	aetherStop: () => ipcRenderer.invoke(EventsKeys.AETHER_STOP),
+	aetherStatus: () => ipcRenderer.invoke(EventsKeys.AETHER_STATUS),
+	aetherUpdateConfig: (config: any) => ipcRenderer.invoke(EventsKeys.AETHER_UPDATE_CONFIG, config),
+	profileToggle: (data: { profileId: string; type: 'game' | 'app'; mode?: string; region?: string }) =>
+		ipcRenderer.invoke(EventsKeys.PROFILE_TOGGLE, data),
+	profileActivate: (data: { profileId: string; type: 'game' | 'app'; mode?: string; region?: string }) =>
+		ipcRenderer.invoke(EventsKeys.PROFILE_ACTIVATE, data),
+	profileDeactivate: (profileId: string) =>
+		ipcRenderer.invoke(EventsKeys.PROFILE_DEACTIVATE, profileId),
+	getActiveProfiles: () => ipcRenderer.invoke(EventsKeys.GET_ACTIVE_PROFILES),
+	getRoutingStatus: () => ipcRenderer.invoke(EventsKeys.GET_ROUTING_STATUS),
+	getGameProfiles: () => ipcRenderer.invoke(EventsKeys.GET_GAME_PROFILES),
+	getAppProfiles: () => ipcRenderer.invoke(EventsKeys.GET_APP_PROFILES),
+
+	gamesScan: (force?: boolean) => ipcRenderer.invoke(EventsKeys.GAMES_SCAN, force),
+	gamesGetInstalled: () => ipcRenderer.invoke(EventsKeys.GAMES_GET_INSTALLED),
+	gamesUpdatePreference: (data: {
+		gameId: string
+		autoOptimize?: boolean
+		preferredMode?: 'dns_only' | 'full_boost'
+		preferredRegion?: string
+	}) => ipcRenderer.invoke(EventsKeys.GAMES_UPDATE_PREFERENCE, data),
+	radarToggle: (enabled: boolean) => ipcRenderer.invoke(EventsKeys.RADAR_TOGGLE, enabled),
+	radarStatus: () => ipcRenderer.invoke(EventsKeys.RADAR_STATUS),
+	radarSetConfig: (config: any) => ipcRenderer.invoke(EventsKeys.RADAR_SET_CONFIG, config),
 }
 
 export const uiPreload = {

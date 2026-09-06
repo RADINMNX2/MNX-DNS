@@ -1,20 +1,23 @@
 # Changelog
 
-## v1.0.0 - MNX DNS Clean Edition
+## v1.0.0 - MNX DNS Gaming Suite
 
 - Rebranded to **MNX DNS** by RADIN MNX
-- Removed all advertising/promotional banners and ad card component
-- Removed Google Analytics (react-ga4) integration
-- Removed donation links, sponsor panels, and promotional UI elements
-- Removed FUNDING.yml and Discord promotional links
-- Analytics toggle removed from settings (privacy-first by default)
-- Updated all window titles, tray menus, and notifications to "MNX DNS"
-- Updated auto-updater to point to new MNX-DNS repository
-- Clean, ad-free, privacy-respecting DNS manager
+- **WinDivert Integration**: Kernel-level UDP:53 DNS interception
+- **WireGuard Tunneling**: Wintun-based high-speed VPN tunnel
+- **Split-Tunneling Engine**: 50+ curated game domains + CIDR routing
+- **Cyberpunk Gaming UI**: GameCard, PingWave, RegionSelector, OptimizeButton
+- **Design System**: Deep obsidian, metallic blue, emerald neon green tokens
+- **Font Stack**: Vazirmatn (Persian), Inter (English), Ubuntu Mono
+- **205 Game Assets**: Icons, banners, and UI elements migrated
+- Removed analytics, donation links, and promotional bloat
+- Updated all branding, metadata, and copyright notices
+- New IPC events for network engine control
+- electron-builder configured for admin privileges + binary bundling
 
 ---
 
-# Original Changelog (dnsChanger)
+## Previous Versions (DNS Changer v2.x)
 
 ## 2.3.9
 - improve UI

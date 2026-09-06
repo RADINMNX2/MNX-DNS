@@ -1,4 +1,4 @@
-appId: io.mnxdns.desktop
+appId: com.radinmnx.mnxdns
 productName: MNX DNS
 afterPack: 'removeLocales.js'
 artifactName: '${productName}-prelease-${os}-${arch}-${version}.${ext}'
@@ -10,8 +10,8 @@ files:
   - '!**/._*'
   - '!**/{.DS_Store,.git,.hg,.svn,CVS,RCS,SCCS,__pycache__,thumbs.db,.gitignore,.gitattributes,.editorconfig,.flowconfig,.yarn-metadata.json,.idea,appveyor.yml,.travis.yml,circle.yml,npm-debug.log,.nyc_output,yarn.lock,.yarn-integrity}'
   - '!**/node_modules/search-index/si${/*}'
-  - '!**/*.md' # ignore md files
-  - '!**/*.yml' # ignore yml files
+  - '!**/*.md'
+  - '!**/*.yml'
   - '!**/.github'
   - '!**/release'
   - '!**/.eslint*'
@@ -22,20 +22,36 @@ asar: true
 compression: maximum
 directories:
   output: 'release/${version}'
+extraResources:
+  - from: 'binaries/windivert'
+    to: 'binaries/windivert'
+  - from: 'binaries/wireguard'
+    to: 'binaries/wireguard'
+  - from: 'binaries/aether'
+    to: 'binaries/aether'
+  - from: 'data'
+    to: 'data'
 win:
   icon: 'public/icons/icon.ico'
   requestedExecutionLevel: 'highestAvailable'
   publish:
     - github
   target:
-    - zip
-    - msi
     - nsis
+    - zip
+nsis:
+  oneClick: false
+  perMachine: false
+  allowToChangeInstallationDirectory: true
+  deleteAppDataOnUninstall: true
+  runAfterFinish: true
+  createDesktopShortcut: true
+  shortcutName: 'MNX DNS'
+  installerIcon: 'public/icons/icon.ico'
 linux:
   icon: 'public/icons/icon.icns'
   maintainer: 'mnxdns.io'
   target:
-    - rpm
     - AppImage
     - deb
   category: Utilities
@@ -49,15 +65,6 @@ mac:
   category: Utilities
   publish:
     - github
-nsis:
-  perMachine: true
-  oneClick: false
-  installerIcon: 'public/icons/icon.ico'
-  deleteAppDataOnUninstall: true
-  runAfterFinish: true
-  createDesktopShortcut: true
-  allowToChangeInstallationDirectory: true
-  shortcutName: 'MNX DNS'
 npmRebuild: true
 nodeGypRebuild: false
 

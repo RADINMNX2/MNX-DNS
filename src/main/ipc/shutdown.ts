@@ -112,7 +112,7 @@ function getShutdownCommand(delayInSeconds: number): string {
 
 	switch (platform) {
 		case 'win32':
-			return `shutdown /s /t ${delayInSeconds} /c "Scheduled shutdown from DNS Changer"`
+			return `shutdown /s /t ${delayInSeconds} /c "Scheduled shutdown from MNX DNS"`
 		case 'darwin': // macOS
 			return `sudo shutdown -h +${Math.ceil(delayInSeconds / 60)}` // macOS uses minutes
 		case 'linux':

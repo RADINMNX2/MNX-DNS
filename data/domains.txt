@@ -1,0 +1,120 @@
+# MNX DNS - Game Bypass Domains
+# Format: one domain per line, # for comments
+# These domains are routed through the tunnel for optimal gaming performance
+
+# Valve / Steam
+steamcommunity.com
+steampowered.com
+steamgames.com
+steamcontent.com
+steamserver.net
+valvesoftware.com
+store.steampowered.com
+api.steampowered.com
+cm.steampowered.com
+cdn.steampowered.com
+
+# Epic Games
+epicgames.com
+unrealengine.com
+epicgames.dev
+store.epicgames.com
+launcher-public-service-prod06.ol.epicgames.com
+
+# Riot Games (Valorant / League of Legends)
+riotgames.com
+leagueoflegends.com
+playvalorant.com
+riotcdn.net
+riotgames.net
+nw-rf-valorant.na1.pvp.net
+la1.na2.pvp.net
+brw.pvp.net
+euw1.pvp.net
+
+# Blizzard / BattleNet
+battle.net
+blizzard.com
+blzstaticcdn.com
+worldofwarcraft.com
+overwatch.com
+playoverwatch.com
+
+# EA / Origin
+ea.com
+origin.com
+answers.ea.com
+
+# Ubisoft
+ubisoft.com
+ubisoftconnect.com
+ubi.com
+
+# Rockstar Games
+rockstargames.com
+socialclub.rockstargames.com
+
+# Xbox / Microsoft
+xbox.com
+xboxlive.com
+xboxservices.com
+xbl-gwsvc.xboxlive.com
+
+# NVIDIA
+nvidia.com
+nvidia.cn
+gforspeed.nvidia.com
+
+# Discord
+discord.com
+discord.gg
+discordapp.com
+cdn.discordapp.com
+
+# General Gaming CDNs
+akamaihd.net
+cloudfront.net
+fastly.net
+cloudflare.com
+
+# PlayStation
+playstation.com
+playstationnetwork.com
+sony.com
+
+# Nintendo
+nintendo.com
+nintendo.net
+
+# Minecraft
+mojang.com
+minecraft.net
+sessionserver.mojang.com
+login.mojang.com
+authserver.mojang.com
+
+# Roblox
+roblox.com
+roblox.org
+rbxcdn.com
+robloxapis.com
+
+# Game-specific servers
+pubg.com
+callofduty.com
+activision.com
+apexlegends.com
+ea.com
+fortnite.com
+destinythegame.com
+rainbowsix.com
+rainbow6.ubisoft.com
+rust.facepunch.com
+dayz.com
+terraria.org
+starwars.ea.com
+halo waypoint
+
+# Cloudflare WARP / DNS
+1.1.1.1
+1.0.0.1

@@ -3,7 +3,7 @@ import React, { useState, useEffect, type JSX } from 'react'
 import { Toaster } from 'react-hot-toast'
 import type { IconType } from 'react-icons'
 import { TbTool } from 'react-icons/tb'
-import { MdOutlineExplore } from 'react-icons/md'
+import { MdOutlineExplore, MdSportsEsports } from 'react-icons/md'
 import { TbSettings, TbSmartHome } from 'react-icons/tb'
 import { ToolsPage } from './pages/tools/tools.page'
 import TypesafeI18n from '../i18n/i18n-react'
@@ -13,6 +13,7 @@ import { PageWrapper } from './Wrappers/pages.wrapper'
 import { ExplorePage } from './pages/explore.page'
 import { HomePage } from './pages/home.page'
 import { SettingPage } from './pages/setting.page'
+import { RoutingMatrixPage } from './pages/routing-matrix.page'
 
 import { getThemeSystem, themeChanger } from './utils/theme.util'
 import { defaultSetting } from '../shared/constants/default-setting.contant'
@@ -38,6 +39,12 @@ const pages: Page[] = [
 		element: <ExplorePage />,
 		icon: MdOutlineExplore,
 		name: 'Explore',
+	},
+	{
+		key: '/routing',
+		element: <RoutingMatrixPage />,
+		icon: MdSportsEsports,
+		name: 'Matrix',
 	},
 	{ key: '/tools', element: <ToolsPage />, icon: TbTool, name: 'Tools' },
 	{ key: '/setting', element: <SettingPage />, icon: TbSettings, name: 'Setting' },

@@ -4,7 +4,6 @@ import { getIconPath } from '../shared/getIconPath'
 import { EventsKeys } from '../../shared/constants/eventsKeys.constant'
 
 ipcMain.on(EventsKeys.NOTIFICATION, (_event, data) => {
-	// new Notification({ title: "DNS Changer", body: data, icon }).show();
 	notfi('MNX DNS', data)
 })
 

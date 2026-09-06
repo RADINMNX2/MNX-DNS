@@ -28,7 +28,7 @@ process.env.PUBLIC = process.env.VITE_DEV_SERVER_URL
 
 if (release().startsWith('6.1')) app.disableHardwareAcceleration()
 
-if (process.platform === 'win32') app.setAppUserModelId('io.mnxdns.desktop')
+if (process.platform === 'win32') app.setAppUserModelId('com.radinmnx.mnxdns')
 
 if (!app.requestSingleInstanceLock()) {
 	app.quit()
@@ -173,6 +173,10 @@ import './ipc/notif'
 import './ipc/dialogs'
 import './ipc/shutdown'
 import './ipc/benchmark'
+import './ipc/network'
+import './ipc/aether'
+import './ipc/routing'
+import './ipc/games'
 import isDev from './shared/isDev'
 
 function createTray() {

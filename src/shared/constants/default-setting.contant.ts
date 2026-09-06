@@ -6,5 +6,4 @@ export const defaultSetting: SettingInStore = {
 	autoUpdate: true,
 	minimize_tray: false,
 	network_interface: 'Auto',
-	use_analytic: false,
 }
