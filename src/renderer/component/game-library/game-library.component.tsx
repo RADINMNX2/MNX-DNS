@@ -13,7 +13,7 @@ import {
 } from 'react-icons/md'
 import {
 	TbServer,
-	TbDeviceDesktopGamepad,
+	TbDeviceGamepad2,
 	TbPlayerPlay,
 	TbPlayerStop,
 } from 'react-icons/tb'
@@ -152,7 +152,7 @@ export function MyLibrary({
 			<div className="flex items-center justify-between">
 				<div className="flex items-center gap-2">
 					<div className="flex items-center gap-1.5">
-						<TbDeviceDesktopGamepad size={16} className="text-mnx-neon" />
+						<TbDeviceGamepad2 size={16} className="text-mnx-neon" />
 						<h2 className="text-sm font-black font-inter text-mnx-text tracking-tight">
 							My Library
 						</h2>
@@ -303,7 +303,7 @@ export function MyLibrary({
 										/>
 									) : (
 										<div className="w-full h-full bg-gradient-to-br from-mnx-blue/20 to-mnx-neon/10 flex items-center justify-center">
-											<TbDeviceDesktopGamepad
+											<TbDeviceGamepad2
 												size={20}
 												className="text-mnx-text-dim/40"
 											/>
