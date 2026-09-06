@@ -5,11 +5,6 @@ on:
     branches: [main]
     tags: ['v*']
   workflow_dispatch:
-    inputs:
-      version:
-        description: 'Release Version (e.g. v2.0.0)'
-        required: false
-        default: ''
 
 permissions:
   contents: write
@@ -21,47 +16,47 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install Node.js v20
+      - name: Install Node.js 22
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
 
       - name: Install dependencies
         run: npm install --force
 
-      - name: Ensure binary directories exist
+      - name: Ensure build directories exist
+        shell: cmd
         run: |
           if not exist "binaries\windivert" mkdir "binaries\windivert"
           if not exist "binaries\wireguard" mkdir "binaries\wireguard"
           if not exist "binaries\aether" mkdir "binaries\aether"
-          echo. > "binaries\windivert\.gitkeep"
-          echo. > "binaries\wireguard\.gitkeep"
-          echo. > "binaries\aether\.gitkeep"
-          if not exist "data" mkdir "data"
-          if not exist "data\domains.txt" echo # placeholder > "data\domains.txt"
+          echo.>"binaries\windivert\.gitkeep"
+          echo.>"binaries\wireguard\.gitkeep"
+          echo.>"binaries\aether\.gitkeep"
 
       - name: Typecheck
-        run: node ./node_modules/typescript/bin/tsc --noEmit
+        shell: cmd
+        run: node_modules\.bin\tsc --noEmit
 
-      - name: Build Vite (renderer + main + preload)
-        run: npx vite build
+      - name: Vite Build
+        shell: cmd
+        run: node_modules\.bin\vite build
 
-      - name: Package Electron (Windows x64)
+      - name: Electron Builder
+        shell: cmd
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npx electron-builder --win --x64 -p never
+        run: node_modules\.bin\electron-builder --win --x64 -p never
 
-      - name: List build outputs
-        run: dir /s /b release\*.* 2>nul
+      - name: List artifacts
+        shell: cmd
+        run: dir release /s /b
 
-      - name: Upload Installer Artifact
+      - name: Upload Installer
         uses: actions/upload-artifact@v4
         with:
           name: MNX-DNS-Windows-x64
-          path: |
-            release/*.exe
-            release/*.msi
-            release/*.zip
+          path: release/*.exe
           if-no-files-found: warn
           retention-days: 30
 
@@ -79,29 +74,14 @@ jobs:
           name: MNX-DNS-Windows-x64
           path: artifacts
 
-      - name: List downloaded artifacts
-        run: ls -la artifacts/ || echo "No artifacts found"
-
-      - name: Create GitHub Release
+      - name: Publish Release
         uses: softprops/action-gh-release@v2
-        if: startsWith(github.ref, 'refs/tags/v')
         with:
+          tag_name: ${{ startsWith(github.ref, 'refs/tags/v') && github.ref_name || 'latest-build' }}
+          name: ${{ startsWith(github.ref, 'refs/tags/v') && format('MNX DNS {0}', github.ref_name) || 'Latest Build' }}
           files: artifacts/*
           draft: false
           prerelease: true
           generate_release_notes: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Upload to main branch release
-        uses: softprops/action-gh-release@v2
-        if: github.ref == 'refs/heads/main'
-        with:
-          tag_name: 'latest-build'
-          name: 'Latest Build (main)'
-          files: artifacts/*
-          draft: false
-          prerelease: true
-          generate_release_notes: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

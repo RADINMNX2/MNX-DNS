@@ -1,0 +1,1 @@
+feat: MNX DNS flagship edition - gaming DNS, WinDivert router, Aether tunnel, game scanner, radar engine, CI/CD pipeline
