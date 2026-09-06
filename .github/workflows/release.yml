@@ -36,11 +36,12 @@ jobs:
         run: npx electron-builder --win --x64
 
       - name: List output files
+        shell: pwsh
         run: |
-          echo "=== Listing release/ tree ==="
-          if exist release (dir release /s /b) else (echo "release/ not found")
-          echo "=== Listing dist/ tree ==="
-          if exist dist (dir dist /s /b) else (echo "dist/ not found")
+          Write-Host "=== release/ tree ==="
+          Get-ChildItem -Path release -Recurse -File | Select-Object -ExpandProperty FullName
+          Write-Host "=== dist/ tree ==="
+          if (Test-Path dist) { Get-ChildItem -Path dist -Recurse -File | Select-Object -ExpandProperty FullName }
 
       - name: Upload Installer Artifact
         uses: actions/upload-artifact@v4
@@ -49,7 +50,6 @@ jobs:
           path: |
             release/**/*.exe
             release/**/*.msi
-            release/**/*.blockmap
           if-no-files-found: warn
           retention-days: 30
 
@@ -62,7 +62,6 @@ jobs:
           files: |
             release/**/*.exe
             release/**/*.msi
-            release/**/*.blockmap
           draft: false
           prerelease: false
           generate_release_notes: true
