@@ -3,7 +3,7 @@ import { EventsKeys } from '../../shared/constants/eventsKeys.constant'
 import { GameScanner } from '../services/scanner/GameScanner'
 import { ProcessRadar } from '../services/radar/ProcessRadar'
 import { updateGameInCache, loadCachedGames } from '../services/scanner/cache'
-import { userLogger } from '../../shared/logger'
+import { userLogger } from '../shared/logger'
 
 const scanner = GameScanner.getInstance()
 const radar = ProcessRadar.getInstance()

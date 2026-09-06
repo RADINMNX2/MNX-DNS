@@ -1,5 +1,5 @@
 import { app } from 'electron'
-import { userLogger } from '../../shared/logger'
+import { userLogger } from '../shared/logger'
 import { WinDivertService } from './windivert/windivert.service'
 import { WireGuardService } from './wireguard/wireguard.service'
 import { SplitTunnelService } from './router/split-tunnel.service'
