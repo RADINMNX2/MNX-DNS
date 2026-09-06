@@ -66,7 +66,7 @@ export function AppsHub({ apps, activeApps, onToggle, onModeChange }: AppsHubPro
 	return (
 		<div className="space-y-3">
 			<div className="flex items-center gap-2 px-1">
-				<span className="text-lg">\u{1F4F1}</span>
+				<span className="text-lg">📱</span>
 				<h2 className="text-sm font-bold font-inter text-mnx-text tracking-wide uppercase">
 					Apps & Media
 				</h2>

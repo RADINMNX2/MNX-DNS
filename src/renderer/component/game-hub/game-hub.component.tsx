@@ -63,7 +63,7 @@ export function GameHub({
 	return (
 		<div className="space-y-3">
 			<div className="flex items-center gap-2 px-1">
-				<span className="text-lg">\u{1F3AE}</span>
+				<span className="text-lg">🎮</span>
 				<h2 className="text-sm font-bold font-inter text-mnx-text tracking-wide uppercase">
 					Game FastPath
 				</h2>
