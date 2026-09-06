@@ -1,7 +1,7 @@
 appId: com.radinmnx.mnxdns
 productName: MNX DNS
 afterPack: 'removeLocales.js'
-artifactName: '${productName}-Setup-${os}-${arch}.${ext}'
+artifactName: 'MNXDNS-Setup-${os}-${arch}.${ext}'
 files:
   - '**/*'
   - '!**/node_modules/*/{CHANGELOG.md,README.md,README,readme.md,readme,test,__tests__,tests,powered-test,example,examples}'
